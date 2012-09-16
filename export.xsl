@@ -148,7 +148,6 @@ Magic numbers:
 	</xsl:for-each>
 </xsl:template>
 			
-<!-- template to parse and insert figures -->
 <xsl:template name="figures">
 	<xsl:text>
 		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
@@ -163,11 +162,6 @@ Magic numbers:
 		select="current()/node/richcontent/html/body/p/img/@src"/><xsl:text>}
 	</xsl:text>
 </xsl:template>
-
-<!--We look if there are images in the frame in order to put columns or not-->
-				<!--<xsl:if test="current()/node/richcontent/html/body">
-					<xsl:text> Note detected</xsl:text>
-				</xsl:if>-->
 
 
 <xsl:template match="text">
