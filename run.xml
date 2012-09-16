@@ -2,7 +2,7 @@
 <!-- Testing:
 xsltproc run.xml Main\ Topic.mm | grep Here
 -->	  
-<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>  
+<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" version='1.0'>  
 <xsl:output omit-xml-declaration="yes" encoding="UTF-8"/>
 <xsl:template match="map">
 	<xsl:apply-templates/>
@@ -11,12 +11,23 @@ xsltproc run.xml Main\ Topic.mm | grep Here
 <xsl:template match="node">
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
 		<xsl:variable name="filename" select="'Another Map.mm'"/>
-		<xsl:variable name="filename1" select="translate($filename,' ','%20')"/>
-		<xsl:variable name="filename2" select="encode-for-uri($filename)"/>
+		<!-- 2.0 <xsl:variable name="filename1" select="fn:replace($filename,' ','%20')"/>-->
+		<!-- only 1st char <xsl:variable name="filename1" select='translate($filename," ","20")'/>-->
+		<!--<xsl:variable name="filename2" select="encode-for-uri($filename)"/>-->
 		<!--<xsl:variable name="filename2" select="'Another%20Map.mm'"/>-->
-		<xsl:apply-templates select="document('/Users/g/linux/src/freemind_export/Another Map.mm')"/>
+		<!--<xsl:apply-templates select="document('/Users/g/linux/src/freemind_export/Another Map.mm')"/>-->
 		<!--<xsl:apply-templates select="document('1.xml')"/>-->
-		<xsl:apply-templates select="document($filename2)"/>
+	  
+		<xsl:variable name="filename1">
+    <xsl:call-template name="string-replace-all">
+      <xsl:with-param name="text" select="$filename" />
+      <xsl:with-param name="replace" select="' '" />
+      <xsl:with-param name="by" select="'%20'" />
+    </xsl:call-template>
+  </xsl:variable>
+		
+		<xsl:apply-templates select="document($filename1)"/>
+		<xsl:value-of select="$filename1" />
 	</xsl:if>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
@@ -26,6 +37,28 @@ xsltproc run.xml Main\ Topic.mm | grep Here
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
+ </xsl:template>
+
+
+ <xsl:template name="string-replace-all">
+    <xsl:param name="text" />
+    <xsl:param name="replace" />
+    <xsl:param name="by" />
+    <xsl:choose>
+      <xsl:when test="contains($text, $replace)">
+        <xsl:value-of select="substring-before($text,$replace)" />
+        <xsl:value-of select="$by" />
+        <xsl:call-template name="string-replace-all">
+          <xsl:with-param name="text"
+          select="substring-after($text,$replace)" />
+          <xsl:with-param name="replace" select="$replace" />
+          <xsl:with-param name="by" select="$by" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$text" />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
 
