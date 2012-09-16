@@ -10,6 +10,17 @@
 <node CREATED="1347809566449" ID="ID_45763814" MODIFIED="1347809567326" TEXT="123"/>
 </node>
 <node CREATED="1347809559409" ID="ID_207441187" MODIFIED="1347809562622" POSITION="right" TEXT="..."/>
-<node CREATED="1347809640641" ID="ID_237944760" LINK="/Users/g/linux/src/freemind_export/Another Map.mm" MODIFIED="1347809640641" POSITION="left" TEXT="Another Map.mm"/>
+<node CREATED="1347809640641" ID="ID_237944760" LINK="/Users/g/linux/src/freemind_export/Another Map.mm" MODIFIED="1347809871363" POSITION="left" TEXT="Another Map.mm"/>
+<node CREATED="1347809878914" ID="ID_1750016127" MODIFIED="1347809884164" POSITION="left">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="debian.png" />
+  </body>
+</html>
+</richcontent>
+</node>
 </node>
 </map>

@@ -9,7 +9,8 @@ Copyright and Authors: 2001 - 2012
  Gerolf Ziegenhain <g@ziegenhain.com>
 
 
-xsltproc export.xsl test.mm 
+xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex
+
 
 See: http://freemind.sourceforge.net/
 -->
@@ -24,7 +25,7 @@ See: http://freemind.sourceforge.net/
 	\usepackage[utf8]{inputenc}
 	\usepackage[]{babel}
 	\usepackage[T1]{fontenc}
-	\author{Uwe Ziegenhagen}
+	\author{Tux}
 	\title{</xsl:text><xsl:value-of select="node/@TEXT"/><xsl:text>}
 	\begin{document}
 	\maketitle
@@ -168,15 +169,15 @@ See: http://freemind.sourceforge.net/
 <!-- template to parse and insert figures -->
 <xsl:template name="figures">
 	<xsl:text>
-		\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
+		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
 			select="current()/node/richcontent/html/body/img/@src"/><xsl:text>}
 	</xsl:text>
 </xsl:template>
 <!-- template to parse and insert figures with manually edited html. (inside <p>)-->
 <xsl:template name="figuresp">
 	<xsl:text>
-		\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
-			select="current()/node/richcontent/html/body/p/img/@src"/><xsl:text>}
+		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
+			select="current()/node/richcontent/html/body/img/@src"/><xsl:text>}
 	</xsl:text>
 </xsl:template>
 
