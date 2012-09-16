@@ -20,6 +20,7 @@ TODO:
 * indented level 5 missing
 * if all siblings have no child, use itemize
 * follow links to other files
+* convert arrows to references to text passages
 -->
 
 <xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>  
@@ -87,9 +88,16 @@ Magic numbers:
 			<xsl:call-template name="itemization_sections"></xsl:call-template>
 		</xsl:if>		
 	</xsl:if>
+
+	<xsl:if test = "contains(current()/@LINK,'.mm') ">
+<xsl:variable name="doc2" select="document(current()/@LINK)" />
+	<xsl:text>
+		AJAJAJAJAJAJ 
+	</xsl:text>
+	<xsl:value-of select="$doc2/map@VERSION"/>
+	</xsl:if>
+
 </xsl:template>
-
-
 
 <!-- Itemization for subsections -->
 <xsl:template name="itemization_sections">
