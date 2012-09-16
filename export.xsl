@@ -18,7 +18,8 @@ See: http://freemind.sourceforge.net/
 
 
 TODO:
-* itemize works
+* indented level 5 missing
+* if all siblings have no child, use itemize
 * follow links to other files
 -->
 
@@ -72,49 +73,26 @@ Magic numbers:
 	<xsl:if test="(count(child::node()))>=0">
 		<xsl:if test="(count(ancestor::node())-2)=1">
 			<xsl:text>\chapter{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
-			<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
-				<xsl:call-template name="richtext"></xsl:call-template>
-			</xsl:if>
-			<xsl:if test="current()/richcontent/html/body/img">
-				<xsl:call-template name="figures"></xsl:call-template>
-			</xsl:if>
 			<xsl:apply-templates/>
 		</xsl:if>
 		
 		<xsl:if test="(count(ancestor::node())-2)=2">
 			<xsl:text>\section{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
-			<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
-				<xsl:call-template name="richtext"></xsl:call-template>
-			</xsl:if>
-			<xsl:if test="current()/richcontent/html/body/img">
-				<xsl:call-template name="figures"></xsl:call-template>
-			</xsl:if>
 			<xsl:apply-templates/>
 		</xsl:if>
 		
 		
 		<xsl:if test="(count(ancestor::node())-2)=3">
 			<xsl:text>\subsection{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
-			<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
-				<xsl:call-template name="richtext"></xsl:call-template>
-			</xsl:if>
-			<xsl:if test="current()/richcontent/html/body/img">
-				<xsl:call-template name="figures"></xsl:call-template>
-			</xsl:if>
 			<xsl:apply-templates/>
 		</xsl:if>	
 
 		<xsl:if test="(count(ancestor::node())-2)=4">
 			<xsl:text>\subsubsection{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
-			<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
-				<xsl:call-template name="richtext"></xsl:call-template>
-			</xsl:if>
-			<xsl:if test="current()/richcontent/html/body/img">
-				<xsl:call-template name="figures"></xsl:call-template>
-			</xsl:if>
+			<xsl:apply-templates/>
 		</xsl:if>	
 
-		<xsl:if test="(count(ancestor::node())-2)>=4">
+		<xsl:if test="(count(ancestor::node())-2)>4">
 			<xsl:call-template name="itemization_sections"></xsl:call-template>
 		</xsl:if>		
 	</xsl:if>
@@ -153,32 +131,6 @@ Magic numbers:
 
 
 
-
-<!-- template to parse and insert rich text (html, among <p> in Latex \item-s -->
-<xsl:template name="richtext">
-	<xsl:param name="i" select="current()/richcontent/html/body/p"/>
-	<xsl:for-each select="$i">
-		<xsl:text>&#xD; 
-		&#xD;</xsl:text>
-		<xsl:value-of select="normalize-space(translate(.,'&#x0d;&#x0a;', '  '))"/>
-	</xsl:for-each>
-</xsl:template>
-			
-<!-- template to parse and insert figures -->
-<xsl:template name="figures">
-	<xsl:text>
-		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
-			select="current()/node/richcontent/html/body/img/@src"/><xsl:text>}
-	</xsl:text>
-</xsl:template>
-<!-- template to parse and insert figures with manually edited html. (inside <p>)-->
-<!-- FIXME: images don't work -->
-<xsl:template name="figuresp">
-	<xsl:text>
-		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
-		select="current()/node/richcontent/html/body/p/img/@src"/><xsl:text>}
-	</xsl:text>
-</xsl:template>
 
 <!-- Itemization of Siblings-->
 <xsl:template name="itemization">
