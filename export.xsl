@@ -52,6 +52,10 @@ Magic numbers:
 * ancestor: 2 already exist in the main structure	  
 -->
 <xsl:template match="node">
+	<xsl:call-template name="node_temp"></xsl:call-template>
+</xsl:template>
+
+<xsl:template name="node_temp">
 	<xsl:if test="(count(ancestor::node())-2)=0">
 		<xsl:apply-templates/>
 	</xsl:if>
@@ -89,10 +93,19 @@ Magic numbers:
 		</xsl:if>		
 	</xsl:if>
 
+	<!-- Follow links -->
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
-	<xsl:text>
-		AJAJAJAJAJAJ 
-	</xsl:text>
+		<!-- Extract filename with %20 instead whitespace -->
+		<xsl:variable name="filename" select="@LINK"/>
+		<xsl:variable name="filename1">
+    		<xsl:call-template name="string-replace-all">
+   	   	<xsl:with-param name="text" select="$filename" />
+      		<xsl:with-param name="replace" select="' '" />
+      		<xsl:with-param name="by" select="'%20'" />
+    		</xsl:call-template>
+ 		 </xsl:variable>
+		 <!-- Apply this template to the new file -->
+		 <xsl:apply-templates select="document($filename1)/map"/>
 	</xsl:if>
 
 </xsl:template>
