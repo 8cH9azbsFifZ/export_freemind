@@ -10,7 +10,8 @@ xsltproc run.xml Main\ Topic.mm | grep Here
 
 <xsl:template match="node">
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
-		<xsl:variable name="filename" select="'Another Map.mm'"/>
+<xsl:variable name="filename" select="@LINK"/>
+		<!--<xsl:variable name="filename" select="'Another Map.mm'"/>-->
 		<!-- 2.0 <xsl:variable name="filename1" select="fn:replace($filename,' ','%20')"/>-->
 		<!-- only 1st char <xsl:variable name="filename1" select='translate($filename," ","20")'/>-->
 		<!--<xsl:variable name="filename2" select="encode-for-uri($filename)"/>-->
