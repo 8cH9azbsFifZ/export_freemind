@@ -21,7 +21,7 @@ xsltproc run.xml Main\ Topic.mm | grep Here
  		 </xsl:variable>
 		
 		<xsl:apply-templates select="document($filename1)"/>
-		<xsl:value-of select="$filename1" />
+		<!--<xsl:value-of select="$filename1" />-->
 	</xsl:if>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
