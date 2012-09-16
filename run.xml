@@ -10,22 +10,15 @@ xsltproc run.xml Main\ Topic.mm | grep Here
 
 <xsl:template match="node">
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
-<xsl:variable name="filename" select="@LINK"/>
-		<!--<xsl:variable name="filename" select="'Another Map.mm'"/>-->
-		<!-- 2.0 <xsl:variable name="filename1" select="fn:replace($filename,' ','%20')"/>-->
-		<!-- only 1st char <xsl:variable name="filename1" select='translate($filename," ","20")'/>-->
-		<!--<xsl:variable name="filename2" select="encode-for-uri($filename)"/>-->
-		<!--<xsl:variable name="filename2" select="'Another%20Map.mm'"/>-->
-		<!--<xsl:apply-templates select="document('/Users/g/linux/src/freemind_export/Another Map.mm')"/>-->
-		<!--<xsl:apply-templates select="document('1.xml')"/>-->
-	  
+		<!-- Extract filename with %20 instead whitespace -->
+		<xsl:variable name="filename" select="@LINK"/>
 		<xsl:variable name="filename1">
-    <xsl:call-template name="string-replace-all">
-      <xsl:with-param name="text" select="$filename" />
-      <xsl:with-param name="replace" select="' '" />
-      <xsl:with-param name="by" select="'%20'" />
-    </xsl:call-template>
-  </xsl:variable>
+    		<xsl:call-template name="string-replace-all">
+   	   	<xsl:with-param name="text" select="$filename" />
+      		<xsl:with-param name="replace" select="' '" />
+      		<xsl:with-param name="by" select="'%20'" />
+    		</xsl:call-template>
+ 		 </xsl:variable>
 		
 		<xsl:apply-templates select="document($filename1)"/>
 		<xsl:value-of select="$filename1" />
@@ -40,12 +33,12 @@ xsltproc run.xml Main\ Topic.mm | grep Here
     </xsl:copy>
  </xsl:template>
 
-
- <xsl:template name="string-replace-all">
-    <xsl:param name="text" />
-    <xsl:param name="replace" />
-    <xsl:param name="by" />
-    <xsl:choose>
+ <!-- Replace function for xslt 1.0 -->
+<xsl:template name="string-replace-all">
+	<xsl:param name="text" />
+   <xsl:param name="replace" />
+   <xsl:param name="by" />
+   <xsl:choose>
       <xsl:when test="contains($text, $replace)">
         <xsl:value-of select="substring-before($text,$replace)" />
         <xsl:value-of select="$by" />
