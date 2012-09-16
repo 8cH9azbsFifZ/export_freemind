@@ -93,18 +93,6 @@ Magic numbers:
 	<xsl:text>
 		AJAJAJAJAJAJ 
 	</xsl:text>
-		<xsl:apply-templates select="document('Another Map.mm')"/>
-      <xsl:apply-templates/>
-		<!--<xsl:variable name="varValue" select="document('Another Map.mm')/map"/>
-		<xsl:apply-templates select="$varValue" />	-->
-<xsl:text>%</xsl:text><xsl:value-of select="@LINK"/>
-<!--<xsl:variable name="doc2" select="document(current()/@LINK)" />-->
-<!--	<xsl:value-of select="$doc2/map@VERSION"/>-->
-<!--<xsl:value-of select="document('Another Map.mm')//map/node/@TEXT" />
-<xsl:for-each select="document('Another Map.mm')//map/node/@TEXT">
-   	<xsl:value-of select="."/>
-   </xsl:for-each>
--->
 	</xsl:if>
 
 </xsl:template>
@@ -136,6 +124,28 @@ Magic numbers:
 	<xsl:text>	\item </xsl:text><xsl:value-of select="@TEXT"/><xsl:text></xsl:text>
 	<xsl:text>		\end{itemize}</xsl:text>
 </xsl:template>
+
+<!-- Replace function for xslt 1.0 -->
+<xsl:template name="string-replace-all">
+	<xsl:param name="text" />
+   <xsl:param name="replace" />
+   <xsl:param name="by" />
+   <xsl:choose>
+      <xsl:when test="contains($text, $replace)">
+        <xsl:value-of select="substring-before($text,$replace)" />
+        <xsl:value-of select="$by" />
+        <xsl:call-template name="string-replace-all">
+          <xsl:with-param name="text"
+          select="substring-after($text,$replace)" />
+          <xsl:with-param name="replace" select="$replace" />
+          <xsl:with-param name="by" select="$by" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$text" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 
 </xsl:stylesheet>
