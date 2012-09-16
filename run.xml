@@ -12,8 +12,8 @@ xsltproc run.xml Main\ Topic.mm | grep Here
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
 		<xsl:variable name="filename" select="'Another Map.mm'"/>
 		<xsl:variable name="filename1" select="translate($filename,' ','%20')"/>
-		<!--<xsl:variable name="filename2" select="iri-to-uri($filename)"/>-->
-		<xsl:variable name="filename2" select="'Another%20Map.mm'"/>
+		<xsl:variable name="filename2" select="encode-for-uri($filename)"/>
+		<!--<xsl:variable name="filename2" select="'Another%20Map.mm'"/>-->
 		<xsl:apply-templates select="document('/Users/g/linux/src/freemind_export/Another Map.mm')"/>
 		<!--<xsl:apply-templates select="document('1.xml')"/>-->
 		<xsl:apply-templates select="document($filename2)"/>
