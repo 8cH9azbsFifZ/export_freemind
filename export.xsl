@@ -90,11 +90,21 @@ Magic numbers:
 	</xsl:if>
 
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
-<xsl:variable name="doc2" select="document(current()/@LINK)" />
 	<xsl:text>
 		AJAJAJAJAJAJ 
 	</xsl:text>
-	<xsl:value-of select="$doc2/map@VERSION"/>
+		<xsl:apply-templates select="document('Another Map.mm')"/>
+      <xsl:apply-templates/>
+		<!--<xsl:variable name="varValue" select="document('Another Map.mm')/map"/>
+		<xsl:apply-templates select="$varValue" />	-->
+<xsl:text>%</xsl:text><xsl:value-of select="@LINK"/>
+<!--<xsl:variable name="doc2" select="document(current()/@LINK)" />-->
+<!--	<xsl:value-of select="$doc2/map@VERSION"/>-->
+<!--<xsl:value-of select="document('Another Map.mm')//map/node/@TEXT" />
+<xsl:for-each select="document('Another Map.mm')//map/node/@TEXT">
+   	<xsl:value-of select="."/>
+   </xsl:for-each>
+-->
 	</xsl:if>
 
 </xsl:template>
