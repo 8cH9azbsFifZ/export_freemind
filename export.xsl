@@ -15,6 +15,11 @@ xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex && open test.
 
 
 See: http://freemind.sourceforge.net/
+
+
+TODO:
+* if no children -> no heading
+* follow links to other files
 -->
 
 <xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>  
@@ -55,14 +60,15 @@ Magic numbers:
 -->
 <xsl:template match="node">
 
-	<xsl:if test="(count(child::node()))=0">
-		<xsl:apply-templates/>
-	</xsl:if>
-
 	<xsl:if test="(count(ancestor::node())-2)=0">
 		<xsl:apply-templates/>
 	</xsl:if>
 
+	<xsl:if test="(count(child::node()))=0">
+		<xsl:value-of select="@TEXT"/>
+	</xsl:if>
+
+	<xsl:if test="(count(child::node()))>0">
 		
 	<xsl:if test="(count(ancestor::node())-2)=1">
 		<xsl:text>\chapter{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
@@ -108,8 +114,7 @@ Magic numbers:
 		</xsl:if>
 		<xsl:apply-templates/>
 	</xsl:if>		
-	
-
+	</xsl:if>
 </xsl:template>
 
 <xsl:template name="itemization">
