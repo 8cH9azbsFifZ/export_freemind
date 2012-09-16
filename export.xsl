@@ -120,13 +120,5 @@ Magic numbers:
 </xsl:template>
 
 
-<xsl:template match="text">
-   <Notes><xsl:value-of select="text"/></Notes>
- </xsl:template>
-
-
-
-<!-- End of LaTeXChar template -->
-
 </xsl:stylesheet>
 
