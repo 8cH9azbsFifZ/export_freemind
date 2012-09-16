@@ -26,6 +26,7 @@ TODO:
 <!--<xsl:output omit-xml-declaration="yes" encoding="ISO-8859-1"/>-->
 <xsl:output omit-xml-declaration="yes" encoding="UTF-8"/>
 
+<!-- Main tag -->
 <xsl:template match="map">
 	<xsl:text>
 	\documentclass[ngerman]{scrreprt}
@@ -38,23 +39,14 @@ TODO:
 	\maketitle
 	\tableofcontents
 	</xsl:text>
-
+		<!-- Apply further templates, here... -->
 		<xsl:apply-templates/>
-
 	<xsl:text>
 	\end{document}
 	</xsl:text>
 </xsl:template>
 
-<!-- ======= Body ====== -->
-<!-- Sections Processing -->
-
-<xsl:template match="richcontent">
-</xsl:template>
-
-<!-- Follow links -->
-
-<!-- Comments to the code 
+<!-- Process the nodes
 Magic numbers:
 * ancestor: 2 already exist in the main structure	  
 -->
@@ -96,6 +88,7 @@ Magic numbers:
 		</xsl:if>		
 	</xsl:if>
 </xsl:template>
+
 
 
 <!-- Itemization for subsections -->
