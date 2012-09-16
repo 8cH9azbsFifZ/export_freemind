@@ -1,25 +1,17 @@
 <?xml version='1.0'?>
 <!--
-Released under GPL <http://www.gnu.org/licenses/>
-Copyright and Authors: 2001 - 2012
- Joerg Feuerhake <joerg.feuerhake@free-penguin.org>
- Robert Ladstaetter <robert@ladstaetter.info>
- Igor G. Olaizola <igor.go@gmail.com>
- Uwe Ziegenhagen <webmaster@uweziegenhagen.de>
- Gerolf Ziegenhain <g@ziegenhain.com>
+License     : This code is released under the GPL. [http://www.gnu.org/copyleft/gpl.html]
 
+Authors Joerg Feuerhake [joerg.feuerhake@free-penguin.org]
+Robert Ladstaetter [robert@ladstaetter.info] 
+Igor G. Olaizola [igor.go@gmail.com]
+Uwe Ziegenhagen
+Gerolf Ziegenhain
 
-xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex
-Testing: 
-xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex && open test.pdf
+xsltproc ~/Downloads/mm2latexr_richcontent_v1.02_uwe.xsl test.mm 
 
 
 See: http://freemind.sourceforge.net/
-
-
-TODO:
-* itemize works
-* follow links to other files
 -->
 
 <xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>  
@@ -32,7 +24,7 @@ TODO:
 	\usepackage[utf8]{inputenc}
 	\usepackage[]{babel}
 	\usepackage[T1]{fontenc}
-	\author{Tux}
+	\author{Uwe Ziegenhagen}
 	\title{</xsl:text><xsl:value-of select="node/@TEXT"/><xsl:text>}
 	\begin{document}
 	\maketitle
@@ -50,25 +42,18 @@ TODO:
 <!-- Sections Processing -->
 
 <xsl:template match="richcontent">
-</xsl:template>
+</xsl:template> <!--Avoids to write notes contents at the end of the document-->
 
 <!-- Follow links -->
+<xsl:template match="link">
+</xsl:template>
 
-<!-- Comments to the code 
-Magic numbers:
-* ancestor: 2 already exist in the main structure	  
--->
 <xsl:template match="node">
 
 	<xsl:if test="(count(ancestor::node())-2)=0">
 		<xsl:apply-templates/>
 	</xsl:if>
 
-	<xsl:if test="(count(child::node()))=0">
-		<xsl:value-of select="@TEXT"/>
-	</xsl:if>
-
-	<xsl:if test="(count(child::node()))>0">
 		
 	<xsl:if test="(count(ancestor::node())-2)=1">
 		<xsl:text>\chapter{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
@@ -114,11 +99,37 @@ Magic numbers:
 		</xsl:if>
 		<xsl:apply-templates/>
 	</xsl:if>		
+	
+
+	<xsl:if test="(count(ancestor::node())-2)=5">
+		<xsl:text>\paragraph{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
+		<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
+			<xsl:call-template name="richtext"></xsl:call-template>
+		</xsl:if>
+		<xsl:if test="current()/richcontent/html/body/img">
+			<xsl:call-template name="figures"></xsl:call-template>
+		</xsl:if>
+		<xsl:apply-templates/>
+	</xsl:if>		
+	
+
+	<xsl:if test="(count(ancestor::node())-2)=6">
+		<xsl:text>\subparagraph{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}&#xD;</xsl:text>
+			<!--We look if there are images in the frame in order to put columns or not-->
+			<!--<xsl:if test="current()/node/richcontent/html/body">
+				<xsl:text> Note detected</xsl:text>
+			</xsl:if>-->
+			<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
+				<xsl:call-template name="richtext"></xsl:call-template>
+			</xsl:if>
+			<!-- <xsl:if test="current()/node/richcontent/html/body/p/@text"> -->
+				<xsl:call-template name="itemization"></xsl:call-template>
+			<!-- </xsl:if> -->
+		<xsl:apply-templates/>
 	</xsl:if>
 </xsl:template>
 
 <xsl:template name="itemization">
-<!--
 	<xsl:param name="i" select="current()/node"/>
 	<xsl:text>		\begin{itemize}&#xD;</xsl:text>
 	<xsl:for-each select="$i">
@@ -139,8 +150,11 @@ Magic numbers:
 		<xsl:text>
 		</xsl:text>	
 	</xsl:for-each>
+
+	<!--<xsl:if test="current()/richcontent">
+			<xsl:call-template name="figures"></xsl:call-template>
+		</xsl:if>-->
 	<xsl:text>		\end{itemize}&#xD;</xsl:text>
--->
 </xsl:template>
 
 <!-- template to parse and insert rich text (html, among <p> in Latex \item-s -->
@@ -156,19 +170,22 @@ Magic numbers:
 <!-- template to parse and insert figures -->
 <xsl:template name="figures">
 	<xsl:text>
-		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
+		\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
 			select="current()/node/richcontent/html/body/img/@src"/><xsl:text>}
 	</xsl:text>
 </xsl:template>
 <!-- template to parse and insert figures with manually edited html. (inside <p>)-->
-<!-- FIXME: images don't work -->
 <xsl:template name="figuresp">
 	<xsl:text>
-		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
-		select="current()/node/richcontent/html/body/p/img/@src"/><xsl:text>}
+		\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
+			select="current()/node/richcontent/html/body/p/img/@src"/><xsl:text>}
 	</xsl:text>
 </xsl:template>
 
+<!--We look if there are images in the frame in order to put columns or not-->
+				<!--<xsl:if test="current()/node/richcontent/html/body">
+					<xsl:text> Note detected</xsl:text>
+				</xsl:if>-->
 
 
 <xsl:template match="text">
