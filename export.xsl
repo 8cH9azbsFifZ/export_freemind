@@ -10,6 +10,8 @@ Copyright and Authors: 2001 - 2012
 
 
 xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex
+Testing: 
+xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex && open test.pdf
 
 
 See: http://freemind.sourceforge.net/
@@ -47,7 +49,15 @@ See: http://freemind.sourceforge.net/
 
 <!-- Follow links -->
 
+<!-- Comments to the code 
+Magic numbers:
+* ancestor: 2 already exist in the main structure	  
+-->
 <xsl:template match="node">
+
+	<xsl:if test="(count(child::node()))=0">
+		<xsl:apply-templates/>
+	</xsl:if>
 
 	<xsl:if test="(count(ancestor::node())-2)=0">
 		<xsl:apply-templates/>
@@ -100,35 +110,10 @@ See: http://freemind.sourceforge.net/
 	</xsl:if>		
 	
 
-	<xsl:if test="(count(ancestor::node())-2)=5">
-		<xsl:text>\paragraph{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}</xsl:text>
-		<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
-			<xsl:call-template name="richtext"></xsl:call-template>
-		</xsl:if>
-		<xsl:if test="current()/richcontent/html/body/img">
-			<xsl:call-template name="figures"></xsl:call-template>
-		</xsl:if>
-		<xsl:apply-templates/>
-	</xsl:if>		
-	
-
-	<xsl:if test="(count(ancestor::node())-2)=6">
-		<xsl:text>\subparagraph{</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>}&#xD;</xsl:text>
-			<!--We look if there are images in the frame in order to put columns or not-->
-			<!--<xsl:if test="current()/node/richcontent/html/body">
-				<xsl:text> Note detected</xsl:text>
-			</xsl:if>-->
-			<xsl:if test = "contains(current()/richcontent/@TYPE,'NOTE') ">
-				<xsl:call-template name="richtext"></xsl:call-template>
-			</xsl:if>
-			<!-- <xsl:if test="current()/node/richcontent/html/body/p/@text"> -->
-				<xsl:call-template name="itemization"></xsl:call-template>
-			<!-- </xsl:if> -->
-		<xsl:apply-templates/>
-	</xsl:if>
 </xsl:template>
 
 <xsl:template name="itemization">
+<!--
 	<xsl:param name="i" select="current()/node"/>
 	<xsl:text>		\begin{itemize}&#xD;</xsl:text>
 	<xsl:for-each select="$i">
@@ -149,11 +134,8 @@ See: http://freemind.sourceforge.net/
 		<xsl:text>
 		</xsl:text>	
 	</xsl:for-each>
-
-	<!--<xsl:if test="current()/richcontent">
-			<xsl:call-template name="figures"></xsl:call-template>
-		</xsl:if>-->
 	<xsl:text>		\end{itemize}&#xD;</xsl:text>
+-->
 </xsl:template>
 
 <!-- template to parse and insert rich text (html, among <p> in Latex \item-s -->
@@ -174,10 +156,11 @@ See: http://freemind.sourceforge.net/
 	</xsl:text>
 </xsl:template>
 <!-- template to parse and insert figures with manually edited html. (inside <p>)-->
+<!-- FIXME: images don't work -->
 <xsl:template name="figuresp">
 	<xsl:text>
 		%\includegraphics[width=1.0\textwidth]{</xsl:text><xsl:value-of 
-			select="current()/node/richcontent/html/body/img/@src"/><xsl:text>}
+		select="current()/node/richcontent/html/body/p/img/@src"/><xsl:text>}
 	</xsl:text>
 </xsl:template>
 
