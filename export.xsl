@@ -9,7 +9,6 @@ Copyright and Authors: 2001 - 2012
  Gerolf Ziegenhain <g@ziegenhain.com>
 
 
-xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex
 Testing: 
 xsltproc export.xsl Main\ Topic.mm > test.tex && pdflatex test.tex && open test.pdf
 
@@ -111,25 +110,13 @@ Magic numbers:
 			<xsl:when test="current()/richcontent/html/body/p/@text">
 				<xsl:text>	\item </xsl:text><xsl:call-template name="richtext"></xsl:call-template>
 			</xsl:when>
-			<xsl:otherwise>
-			</xsl:otherwise>
 		</xsl:choose>
-		
 		<xsl:if test="current()/node">
 			<xsl:call-template name="itemization_sections"></xsl:call-template>
 		</xsl:if>
-		<xsl:text>
-		</xsl:text>	
 	</xsl:for-each>
-
-	<!--<xsl:if test="current()/richcontent">
-			<xsl:call-template name="figures"></xsl:call-template>
-		</xsl:if>-->
 	<xsl:text>		\end{itemize}</xsl:text>
 </xsl:template>
-
-
-
 
 
 <!-- Itemization of Siblings-->
