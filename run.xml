@@ -1,4 +1,7 @@
 <?xml version='1.0'?>
+<!-- Testing:
+xsltproc run.xml Main\ Topic.mm | grep Here
+-->	  
 <xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>  
 <xsl:output omit-xml-declaration="yes" encoding="UTF-8"/>
 <xsl:template match="map">
@@ -7,7 +10,13 @@
 
 <xsl:template match="node">
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
-	<xsl:apply-templates select="document('1.xml')"/>
+		<xsl:variable name="filename" select="'Another Map.mm'"/>
+		<xsl:variable name="filename1" select="translate($filename,' ','%20')"/>
+		<!--<xsl:variable name="filename2" select="iri-to-uri($filename)"/>-->
+		<xsl:variable name="filename2" select="'Another%20Map.mm'"/>
+		<xsl:apply-templates select="document('/Users/g/linux/src/freemind_export/Another Map.mm')"/>
+		<!--<xsl:apply-templates select="document('1.xml')"/>-->
+		<xsl:apply-templates select="document($filename2)"/>
 	</xsl:if>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
