@@ -28,7 +28,7 @@ TODO:
 <xsl:output omit-xml-declaration="yes" encoding="UTF-8"/>
 
 <!-- Main tag -->
-<xsl:template match="map">
+<xsl:template match="/">
 	<xsl:text>
 	\documentclass[ngerman]{scrreprt}
 	\usepackage[utf8]{inputenc}
@@ -45,6 +45,11 @@ TODO:
 	<xsl:text>
 	\end{document}
 	</xsl:text>
+</xsl:template>
+
+
+<xsl:template match="map">
+		<xsl:apply-templates/>
 </xsl:template>
 
 <!-- Process the nodes
@@ -105,7 +110,7 @@ Magic numbers:
     		</xsl:call-template>
  		 </xsl:variable>
 		 <!-- Apply this template to the new file -->
-		 <xsl:apply-templates select="document($filename1)/map"/>
+		 <!--<xsl:apply-templates select="document($filename1)/map"/>-->
 	</xsl:if>
 
 </xsl:template>

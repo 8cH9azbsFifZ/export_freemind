@@ -2,18 +2,17 @@
 <!-- Testing:
 xsltproc combine.xsl Main\ Topic.mm | grep Here
 -->	  
-<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" version='1.0'>  
+<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version="1.0">  
 <xsl:output omit-xml-declaration="yes" encoding="UTF-8"/>
-<xsl:template match="map">
-	<map>
-	<xsl:apply-templates/>
-</map>
-</xsl:template>
 
 <xsl:template match="/">
-	<xsl:text>begin</xsl:text>
+	<map>
 	<xsl:apply-templates/>
-	<xsl:text>end</xsl:text>
+	</map>
+</xsl:template>
+
+<xsl:template match="map">
+	<xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="node">
@@ -27,14 +26,16 @@ xsltproc combine.xsl Main\ Topic.mm | grep Here
       		<xsl:with-param name="by" select="'%20'" />
     		</xsl:call-template>
  		 </xsl:variable>
-		
-		 <xsl:apply-templates select="document($filename1)//map"/>
+		 <xsl:apply-templates select="document($filename1)/map"/>
 		<!--<xsl:value-of select="$filename1" />-->
 	</xsl:if>
+	<xsl:if test = "not(contains(current()/@LINK,'.mm')) ">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
+	</xsl:if>
 </xsl:template>
+
 <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
