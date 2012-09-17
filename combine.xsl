@@ -10,6 +10,12 @@ xsltproc combine.xsl Main\ Topic.mm | grep Here
 </map>
 </xsl:template>
 
+<xsl:template match="/">
+	<xsl:text>begin</xsl:text>
+	<xsl:apply-templates/>
+	<xsl:text>end</xsl:text>
+</xsl:template>
+
 <xsl:template match="node">
 	<xsl:if test = "contains(current()/@LINK,'.mm') ">
 		<!-- Extract filename with %20 instead whitespace -->
