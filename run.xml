@@ -5,7 +5,9 @@ xsltproc run.xml Main\ Topic.mm | grep Here
 <xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" version='1.0'>  
 <xsl:output omit-xml-declaration="yes" encoding="UTF-8"/>
 <xsl:template match="map">
+	<map>
 	<xsl:apply-templates/>
+</map>
 </xsl:template>
 
 <xsl:template match="node">
@@ -20,7 +22,7 @@ xsltproc run.xml Main\ Topic.mm | grep Here
     		</xsl:call-template>
  		 </xsl:variable>
 		
-		<xsl:apply-templates select="document($filename1)"/>
+		 <xsl:apply-templates select="document($filename1)//map"/>
 		<!--<xsl:value-of select="$filename1" />-->
 	</xsl:if>
     <xsl:copy>
